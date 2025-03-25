@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend  # Build the backend from the backend directory
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/todo_db  # Backend will connect to MongoDB using this URI
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    container_name: mongo_db
+    ports:
+      - "27017:27017"  # Exposing MongoDB port to the host machine
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
